@@ -285,7 +285,8 @@ def main(arguments: Optional[List[str]] = None):
             pass_args.append(board_option)
 
         # Run the build
-        test_file_map, stdout, stderr = build(args.board, args.libraries, pass_args)
+        output_directory.mkdir(parents=True, exist_ok=True)
+        test_file_map, stdout, stderr = build(args.board, args.libraries, output_directory, pass_args)
 
         # Parse the output into stages
         stages = parse(stdout)
@@ -301,7 +302,7 @@ def main(arguments: Optional[List[str]] = None):
 
         # Remap the output data
         output_data = remap_output(
-            output_data, output_directory, cache_path, test_file_map
+            output_data, cache_path, cache_path, test_file_map
         )
         output_data['arguments'] = sys.argv[1:]
 

@@ -97,7 +97,7 @@ def compile_sketch(
 
 
 def build(
-    board: str, libraries: List[str], args: Union[List[str], None] = None
+    board: str, libraries: List[str], output_dir: Path, args: Union[List[str], None] = None
 ) -> Tuple[Dict[Source, Path], str, str]:
     """Run the test build and produce the raw build console output.
 
@@ -112,8 +112,6 @@ def build(
     Returns:
         tuple of raw standard out and standard error of the build
     """
-    with TemporaryDirectory() as temporary_directory:
-        temporary_path = Path(temporary_directory)
-        mappings = make_sketch(temporary_path, libraries)
-        stdout, stderr = compile_sketch(board, temporary_path, args)
+    mappings = make_sketch(output_dir, libraries)
+    stdout, stderr = compile_sketch(board, output_dir, args)
     return mappings, stdout, stderr
